@@ -1,0 +1,33 @@
+{
+  "name": "gamematchapi",
+  "version": "1.0.0",
+  "description": "API de la aplicacion gamematch",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pat9/GamematchAPI.git"
+  },
+  "keywords": [
+    "game",
+    "match"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pat9/GamematchAPI/issues"
+  },
+  "homepage": "https://github.com/pat9/GamematchAPI#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "crossenv": "0.0.2-security",
+    "dotenv": "^8.0.0",
+    "nodemon": "^1.19.0"
+  }
+}
