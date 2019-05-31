@@ -14,5 +14,19 @@ router.post('/Login', async (req, res) =>{
     }
 })
 
+router.get('/Usuarios', async (req, res) =>{
+    const usuarios = await users.find();
+    res.json(usuarios);
+})
+
+router.post('/Register', async (req, res) =>{
+    const { email, gametag, password, name, birthday} = req.body;
+    const newUser = new users ({
+        email, gametag, password, name, birthday
+    });
+    await newUser.save();
+    console.log(newUser);   
+    res.json('Usuario registrado');
+});
 
 module.exports = router;

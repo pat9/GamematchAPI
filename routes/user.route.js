@@ -5,8 +5,11 @@ router.use(Auth.IsLoggedIn)
 
 router.get('/IsloggedIn', (req, res) =>{
     res.json({
-        IsLoggedIn:true
+        IsLoggedIn:true        
     })
+
+    const id = req.AuthData;
+    console.log(id.user.name);
 })
 
 
