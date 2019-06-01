@@ -9,5 +9,4 @@ router.get('/IsloggedIn', (req, res) =>{
     })
 })
 
-
-module.exports = router;
+module.exports = router;    

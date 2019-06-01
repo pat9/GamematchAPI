@@ -17,6 +17,8 @@ app.use(express.urlencoded({extended:false}))
 app.use('/public',  require('./routes/public.route'));
 app.use('/users', require('./routes/user.route'));
 
+app.use('/arenas', require('./routes/arenas.routes'));
+
 
 app.listen(app.get('PORT'), ()=>{
     console.log(`sevidor corriendo en el puerto ${app.get('PORT')}`)
