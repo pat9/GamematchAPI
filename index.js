@@ -19,6 +19,7 @@ app.use('/users', require('./routes/user.route'));
 app.use('/arenas', require('./routes/arenas.routes'));
 app.use('/venues', require('./routes/venues.routes'));
 app.use('/tournaments', require('./routes/tournaments.route'));
+app.use('/versions',require('./routes/versions.routes'));
 
 
 app.listen(app.get('PORT'), ()=>{
