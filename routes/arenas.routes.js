@@ -17,23 +17,23 @@ router.get('/:id', async (req, res) => {
 })
 
 //Post a new arena
-router.post('/', async (req, res) => {
-    const {arenaId, password, name, format, rules, status, streamed} = req.body;
-    const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed})
+router.post('/create', async (req, res) => {
+    const {arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}} = req.body;
+    const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}})
     await arenas.save();
     res.json({status: 'Arena Saved!'});
 })
 
 //Update an arena
-router.put('/:id', async (req,res) => {
-    const {arenaId, password, name, format, rules, status, streamed} = req.body;
-    const newArena = {arenaId, password, name, format, rules, status, streamed};
+router.put('/update/:id', async (req,res) => {
+    const {arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}} = req.body;
+    const newArena = {arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}};
     await Arenas.findByIdAndUpdate(req.params.id, newArena);
     res.json({status: 'Arena Updated!'});
 })
 
 //Delete an arena
-router.delete('/:id', async (req, res) =>{
+router.delete('/delete/:id', async (req, res) =>{
     await Arenas.findByIdAndRemove(req.params.id);
     res.json({status: 'Arena Deleted!'})
 })
