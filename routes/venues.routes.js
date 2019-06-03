@@ -17,8 +17,10 @@ router.get('/:id', async (req, res) => {
 
 //Post a new venue
 router.post('/', async (req, res) => {
-    const {name, profilepic, lat, long, phone} = req.body;
-    const venue = new Venues({name, profilepic, lat, long, phone})
+    console.log(req.body)
+    const {name, profilepic, phone} = req.body;
+    const {type,coordinates} = req.body.loc;
+    const venue = new Venues({name, profilepic, loc:{type, coordinates}, phone})
     await venue.save();
     res.json({status: 'venue Saved!'});
 })
