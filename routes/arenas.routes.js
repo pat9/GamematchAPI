@@ -37,5 +37,5 @@ router.delete('/:id', async (req, res) =>{
     await Arenas.findByIdAndRemove(req.params.id);
     res.json({status: 'Arena Deleted!'})
 })
-<
+
 module.exports = router;
