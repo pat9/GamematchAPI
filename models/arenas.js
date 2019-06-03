@@ -8,7 +8,11 @@ const arenasSchema = new mongoose.Schema({
     rules: {type:String, required:true},
     status: {type: Boolean, required: true},
     streamed: {type: Boolean, required: true},
-    userId: {type: String, required:false}
+    userId: {type: String, required:false},
+    loc:{      
+        type:{type:String, required:true, default:"Point"},
+        coordinates:[{type:Number, required:true, index:'2dsphere'}] ,
+    }
 })
 
 
