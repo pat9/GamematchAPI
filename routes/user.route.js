@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const  Auth  = require('../middleware/Auth')
-
+const users  = require('../models/user');
 router.use(Auth.IsLoggedIn)
 
 router.get('/IsloggedIn', (req, res) =>{
@@ -8,9 +8,9 @@ router.get('/IsloggedIn', (req, res) =>{
         IsLoggedIn:true        
     })
 
-    const id = req.AuthData;
-    console.log(id.user.name);
-})
+    // const id = req.AuthData;
+    // console.log(id.user.name);
+});
 
 
 module.exports = router;
