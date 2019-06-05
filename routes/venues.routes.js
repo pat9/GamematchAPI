@@ -1,6 +1,5 @@
 const express = require ('express');
 const router = express.Router();
-
 const Venues = require('../models/venues');
 
 //Get all the venues
