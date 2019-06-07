@@ -3,6 +3,7 @@ const users = require('../models/user');
 
 const Auth = {
     IsLoggedIn: (req, res, next) =>{
+        console.log(req.headers);
         const token = req.headers.authorization.split(" ")[1];
         jwt.verify(token, process.env.TOKEN_SECRET_KEY, async(err, decoded) => {
             if (err) {
