@@ -10,11 +10,11 @@ router.post('/Login', async (req, res) =>{
     const user = await users.findOne({gametag:username, password:passEncryp});
     if(user){
         if(user.password === passEncryp){
-        const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '1h' });
-        res.json({
-            isLogged:true,
-            token            
-        })
+            const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+            res.json({
+                isLogged:true,
+                token            
+            })
         }
     }
 })
@@ -31,6 +31,7 @@ router.get('/Usuario/:_id', async(req, res) =>{
 })
 
 router.post('/Register', async (req, res) =>{
+    
     const { email, gametag, password, name, birthday, correo} = req.body;
     const dateUser = new Date(birthday);
     const dateNow = new Date();    
