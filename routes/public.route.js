@@ -26,36 +26,12 @@ router.get('/Usuarios', async (req, res) =>{
 
 router.get('/Usuario/:_id', async(req, res) =>{
     const usuario = await users.findById(req.params._id);    
-     res.json(usuario);
-     console.log("Usuario encontrado");
+     res.json(usuario);     
 })
 
-router.post('/Register', async (req, res) =>{
-    
+router.post('/Registeryoung', async(req, res)=>{
     const { email, gametag, password, name, birthday, correo} = req.body;
-    const dateUser = new Date(birthday);
-    const dateNow = new Date();    
-    month = dateNow.getMonth();
-    day = dateNow.getDay();
-    year = dateNow.getFullYear();
-
-    dateNow.setDate(day);
-    dateNow.setMonth(month);
-    dateNow.setFullYear(year);
-
-    const oldUser = Math.floor(((dateNow - dateUser) / (1000 * 60 * 60 * 24)/ 365));
-
-    console.log(oldUser);
-
-    if(oldUser >= 18){        
-        const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
-        const newUser = new users({
-            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday
-        });
-        await newUser.save();
-        res.json('Usuario registrado');
-    }else{
-        const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
+    const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
         const newUser = new users({
             email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, correo:correo
         });                
@@ -82,8 +58,16 @@ router.post('/Register', async (req, res) =>{
             }
          });
         await newUser.save();
-        
-    }
+})
+
+router.post('/Register', async (req, res) =>{    
+    const { email, gametag, password, name, birthday} = req.body;    
+        const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
+        const newUser = new users({
+            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday
+        });
+        await newUser.save();
+        res.json('Usuario registrado');    
 });
 
 module.exports = router;
