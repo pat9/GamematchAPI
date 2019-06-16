@@ -17,12 +17,13 @@ const upload = multer({storage})
 
 //Get all the venues
 router.get('/', async(req, res) => {
-    const { lat, lng } = req.body;
+    console.log(req.query)
+    const { lat, lng } = req.query;
     if(lat != undefined && lng != undefined){
         const venues = await Venues.aggregate([
             {
                 "$geoNear": {
-                    near : { type: "Point", coordinates: [lng,lat] },
+                    near : { type: "Point", coordinates: [parseFloat(lng),parseFloat(lat)] },
                     distanceField: "dist.calculated",
                     maxDistance: 500000, 
                     includeLocs:"dist.location", 
