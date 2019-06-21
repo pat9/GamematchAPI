@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    email: {type:String, required:true},
-    gametag:{type:String,required:true},
-    password:{type:String, required:true},
-    name:{type:String, required:true},
-    birthday:{type:Date, required:true},
+    email: {type:String, required:false},
+    gametag:{type:String,required:false},
+    password:{type:String, required:false},
+    name:{type:String, required:false},
+    birthday:{type:Date, required:false},
     correo:{type:String, required:false}
 })
 
