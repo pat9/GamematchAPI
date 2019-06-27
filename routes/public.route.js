@@ -38,8 +38,7 @@ router.get('/Usuarios', async (req, res) =>{
 
 router.get('/Usuario/:_id', async(req, res) =>{
     const usuario = await users.findById(req.params._id);    
-     res.json(usuario);
-     console.log("Usuario encontrado");
+     res.json(usuario);     
 })
 
 router.post('/Register', upload.single('profilepic'), async (req, res) =>{
@@ -111,12 +110,14 @@ router.post('/Register', upload.single('profilepic'), async (req, res) =>{
             }
          });
         await newUser.save();
+
         const token = jwt.sign({user:newUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
         res.json({
             isLogged:true,
             token            
         })
     }
+
 });
 
 router.post('/FacebookLogin', async(req, resp)=>{
