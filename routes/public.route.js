@@ -3,6 +3,18 @@ const jwt = require('jsonwebtoken')
 const users  = require('../models/user');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path')
+const cloudinary = require('cloudinary').v2;
+
+const storage = multer.diskStorage({
+    destination:path.join(__dirname,'../temp/img'),
+    filename:(req,file,callback) =>{
+        callback(null, path.basename(file.originalname))
+    }
+})
+
+const upload = multer({storage})
 
 router.post('/Login', async (req, res) =>{
     const {username, pass} = req.body;
@@ -30,8 +42,19 @@ router.get('/Usuario/:_id', async(req, res) =>{
      console.log("Usuario encontrado");
 })
 
-router.post('/Register', async (req, res) =>{
-    
+router.post('/Register', upload.single('profilepic'), async (req, res) =>{
+    let profilepic = {};
+    await cloudinary.uploader.upload(req.file.path, (error, result) => {
+        if(!error){
+            profilepic = result;
+            console.log(profilepic)
+        }
+        else{
+            console.log(error)
+            res.json({status:"Error in cloudinary"})
+        }
+        
+    })
     const { email, gametag, password, name, birthday, correo} = req.body;
     const dateUser = new Date(birthday);
     const dateNow = new Date();    
@@ -45,19 +68,25 @@ router.post('/Register', async (req, res) =>{
 
     const oldUser = Math.floor(((dateNow - dateUser) / (1000 * 60 * 60 * 24)/ 365));
 
-    console.log(oldUser);
 
-    if(oldUser >= 18){        
+    if(oldUser >= 13){        
         const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
         const newUser = new users({
-            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday
+            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic
         });
-        await newUser.save();
-        res.json('Usuario registrado');
+        const user = await newUser.save();
+        console.log(user)
+        console.log(newUser)
+        const token = await jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+        console.log(token)
+        res.json({
+            isLogged:true,
+            token  
+        })
     }else{
         const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
         const newUser = new users({
-            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, correo:correo
+            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, correo:correo, profilepic
         });                
         var transporter = nodemailer.createTransport ({ 
             service: 'gmail', 
@@ -68,7 +97,7 @@ router.post('/Register', async (req, res) =>{
             });
         
         const mailOptions = { 
-            from: process.env.GAMEGMAIL, // dirección del remitente 
+            from: process.env.GAMEGMAIL,
             to: correo, // lista de los destinatarios del 
             subject: 'Control Parental', // Línea del asunto 
             html: '<h1> GameMatch <h1> <br> <p> Por este medio le comunico que su hij@ ha creado una cuenta en nuestra plataforma, este mensaje tiene como finalidad informarle acerca de la actividad de su hij@ </p>' // cuerpo de texto sin formato 
@@ -82,8 +111,25 @@ router.post('/Register', async (req, res) =>{
             }
          });
         await newUser.save();
-        
+        const token = jwt.sign({user:newUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+        res.json({
+            isLogged:true,
+            token            
+        })
     }
 });
+
+router.post('/FacebookLogin', async(req, resp)=>{
+    const {email, name, picture} = req.body();
+    const userExits = await users.findOne({email});
+
+    if(userExits){
+        res.json({msg:'USER_EXIST', user:userExits})
+    }
+    
+    const newUser = new users({email, name, picture})
+
+
+})
 
 module.exports = router;

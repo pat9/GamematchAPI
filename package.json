@@ -4,7 +4,8 @@
   "description": "API de la aplicacion gamematch",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -36,7 +37,7 @@
     "nodemailer-express-handlebars": "^3.0.0"
   },
   "devDependencies": {
-    "crossenv": "0.0.2-security",
+    "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
     "nodemon": "^1.19.0"
   }
