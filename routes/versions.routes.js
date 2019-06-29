@@ -11,18 +11,18 @@ router.get('/versions', async(req, res) => {
 })
 
 //Get a single version
-router.get('/version/developers', async (req, res) => {
-    const version = await Versions.findOne(req.params.developers);
+router.get('/developers/:_id', async (req, res) => {
+    const version = await Versions.findById(req.params._id);
     res.json(version);
 })
 
 
 //Post a new version
 router.post('/createversions', async (req, res) => {
-    const { developers, description,position, contact} = req.body;
-    const versions = new Versions({developers,description,position,contact});
+    const { version, developers, description,position, contact} = req.body;
+    const versions = new Versions({developers,description,position,contact, version});
     await versions.save();
-    res.json({status: 'Version Saved!'});
+    res.json({status: 'Usuario Creado'});
 })
 
 
