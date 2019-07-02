@@ -19,8 +19,8 @@ router.get('/developers/:_id', async (req, res) => {
 
 //Post a new version
 router.post('/createversions', async (req, res) => {
-    const { version, developers, description,position, contact} = req.body;
-    const versions = new Versions({developers,description,position,contact, version});
+    const { version, developers, description,position} = req.body;
+    const versions = new Versions({developers,description,position,version});
     await versions.save();
     res.json({status: 'Usuario Creado'});
 })
@@ -28,8 +28,8 @@ router.post('/createversions', async (req, res) => {
 
 //Update an version
 router.put('/updateversion/:id', async (req,res) => {
-    const {version, developers, description,position, contact} = req.body;
-    const newVersions = {version, developers, description,position, contact};
+    const {version, developers, description,position} = req.body;
+    const newVersions = {version, developers, description,position};
     await Versions.findByIdAndUpdate(req.params.id, newVersions);
     res.json({status: 'Version Updated!'});
 })
