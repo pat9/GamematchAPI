@@ -7,7 +7,11 @@ const UserSchema = new mongoose.Schema({
     name:{type:String, required:false},
     birthday:{type:Date, required:false},
     correo:{type:String, required:false},
-    profilepic:{type:Object, required:false}
+    profilepic:{type:Object, required:false},
+    isSocialLogin:{type:Boolean, required:false},
+    socialMethod:{type:String, required:false},
+    idSocial:{type:String, required:false},
+
 })
 
 module.exports = mongoose.model('users', UserSchema);
