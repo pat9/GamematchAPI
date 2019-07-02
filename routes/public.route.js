@@ -121,14 +121,20 @@ router.post('/Register', upload.single('profilepic'), async (req, res) =>{
 });
 
 router.post('/FacebookLogin', async(req, resp)=>{
-    const {email, name, picture} = req.body();
-    const userExits = await users.findOne({email});
+    const {email, name, picture, userID, isSocialLogin, socialMethod} = req.body;
+    const userExits = await users.findOne({idSocial:userID});
 
     if(userExits){
-        res.json({msg:'USER_EXIST', user:userExits})
+        const token = jwt.sign({user:userExits}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+        resp.json({msg:'USER_EXIST', token:token})
+    }else{
+        const newUser = new users({email, name, profilepic:picture.data, isSocialLogin,socialMethod, idSocial:userID})
+        await newUser.save();
+        const token = jwt.sign({user:newUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+        resp.json({msg:'USER_EXIST', token:token})
+
     }
     
-    const newUser = new users({email, name, picture})
 
 
 })
