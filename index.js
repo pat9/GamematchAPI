@@ -1,4 +1,6 @@
-require('dotenv').config();
+if(process.env.NODE_ENV === 'dev'){
+    require('dotenv').config();
+}
 
 const express = require('express');
 const app = express();
@@ -6,7 +8,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 require('./models/database');
-
 
 
 

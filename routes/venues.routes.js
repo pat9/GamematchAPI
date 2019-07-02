@@ -17,7 +17,6 @@ const upload = multer({storage})
 
 //Get all the venues
 router.get('/', async(req, res) => {
-    console.log(req.query)
     const { lat, lng } = req.query;
     if(lat != undefined && lng != undefined){
         const venues = await Venues.aggregate([
