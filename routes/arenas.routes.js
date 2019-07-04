@@ -6,7 +6,6 @@ const Arenas = require('../models/arenas');
 //Get all the arenas
 router.get('/', async(req, res) => {    
     const arenas = await Arenas.find().sort({_id:-1});
-    console.log(arenas);
     res.json(arenas);    
 })
 
@@ -18,7 +17,6 @@ router.get('/:id', async (req, res) => {
 
 //Post a new arena
 router.post('/create', async (req, res) => {
-    console.log(req.body)
     const {arenaId, password, name, format, rules, status, streamed, date} = req.body;
     const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed, date})
     await arenas.save();
