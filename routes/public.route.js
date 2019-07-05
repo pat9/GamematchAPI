@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 
 router.post('/Login', async (req, res) =>{
-    const {username, pass} = req.body;
-    const passEncryp = crypto.createHmac('sha1', username).update(pass).digest('hex');        
-    const user = await users.findOne({gametag:username, password:passEncryp});
+    const {email, pass} = req.body;
+    const passEncryp = crypto.createHmac('sha1', 'secreto').update(pass).digest('hex');        
+    const user = await users.findOne({email, password:passEncryp});
     if(user){
         console.log("ISHERE")
         if(user.password === passEncryp){
@@ -64,12 +64,12 @@ router.post('/Register', upload.single('profilepic'), async (req, res) =>{
 
     const oldUser = Math.floor(((dateNow - dateUser) / (1000 * 60 * 60 * 24)/ 365));
     
-    const passEncryp = crypto.createHmac('sha1', gametag).update(password).digest('hex');        
+    const passEncryp = crypto.createHmac('sha1', 'secreto').update(password).digest('hex');        
     const newUser = new users({
         email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic
     });
 
-    if(oldUser >= 13){
+    if(oldUser < 13){
         var transporter = nodemailer.createTransport ({ 
             service: 'gmail', 
             auth: { 
