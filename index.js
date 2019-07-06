@@ -29,6 +29,7 @@ app.use('/venues', require('./routes/venues.routes'));
 app.use('/tournaments', require('./routes/tournaments.route'));
 app.use('/versions',require('./routes/versions.routes'));
 app.use('/contacto', require('./routes/contacto.routes'));
+app.use('/credits', require('./routes/credits.routes'));
 
 
 
