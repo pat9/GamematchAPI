@@ -21,7 +21,6 @@ router.post('/Login', async (req, res) =>{
     const passEncryp = crypto.createHmac('sha1', 'secreto').update(pass).digest('hex');        
     const user = await users.findOne({email, password:passEncryp});
     if(user){
-        console.log("ISHERE")
         if(user.password === passEncryp){
             const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
             res.json({
@@ -30,7 +29,7 @@ router.post('/Login', async (req, res) =>{
             })
         }
     }else{
-        console.log("No llege")
+        
     }
 })
 
