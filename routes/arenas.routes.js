@@ -6,7 +6,6 @@ const Arenas = require('../models/arenas');
 //Get all the arenas
 router.get('/', async(req, res) => {    
     const arenas = await Arenas.find().sort({_id:-1});
-    console.log(arenas);
     res.json(arenas);    
 })
 
@@ -18,9 +17,8 @@ router.get('/:id', async (req, res) => {
 
 //Post a new arena
 router.post('/create', async (req, res) => {
-    console.log(req.body)
-    const {arenaId, password, name, format, rules, status, streamed} = req.body;
-    const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed})
+    const {userId, arenaId, password, name, format, rules, status, streamed, date, arenaAct} = req.body;
+    const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed, date, userId, arenaAct})
     await arenas.save();
     res.json({status: 'Arena Saved!'});
 })
@@ -28,8 +26,8 @@ router.post('/create', async (req, res) => {
 
 //Update an arena
 router.put('/update/:id', async (req,res) => {
-    const {arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}} = req.body;
-    const newArena = {arenaId, password, name, format, rules, status, streamed, loc:{type, coordinates}};
+    const {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}} = req.body;
+    const newArena = {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}};
     await Arenas.findByIdAndUpdate(req.params.id, newArena);
     res.json({status: 'Arena Updated!'});
 })

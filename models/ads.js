@@ -9,7 +9,6 @@ const adsSchema = new mongoose.Schema({
     fechaCreacion:{type:Date, required:true, default:Date.now()},
     fechaLimite:{type:Date, required:false, default:Date.now()},
     numUsaurios:{type:Number, required:false},
-    numUsaurios:{type:Number, required:false},
 })
 
 module.exports = mongoose.model('ads', adsSchema);

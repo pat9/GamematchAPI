@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const  Auth  = require('../middleware/Auth')
 const users  = require('../models/user');
+const jwt = require('jsonwebtoken');
+
 router.use(Auth.IsLoggedIn)
 
 router.get('/IsloggedIn', (req, res) =>{
@@ -11,10 +13,12 @@ router.get('/IsloggedIn', (req, res) =>{
 
 
 router.put('/UpdateUser/:_id', async (req, res)=>{    
-    const { email, gametag, password, name, birthday} = req.body;
-    const editUser = { email, gametag, password, name, birthday};
+    const { email, gametag, password, name, birthday, profilepic, description, facebookLink, twitterLink, twitchLink} = req.body;
+    const editUser = { email, gametag, password, name, birthday, profilepic, description, facebookLink, twitterLink, twitchLink};
+    const user = {_id:req.params._id, ...editUser}
+    const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
     await users.findByIdAndUpdate(req.params._id, editUser);
-    res.json({status: 'Datos actualizados'});
+    res.json({status: 'Datos actualizados', token});
 });
 
 router.delete('/DeleteUser/:_id', async(req, res)=>{

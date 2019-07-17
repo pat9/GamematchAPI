@@ -1,4 +1,6 @@
-require('dotenv').config();
+if(process.env.NODE_ENV === 'dev'){
+    require('dotenv').config();
+}
 
 const express = require('express');
 const app = express();
@@ -6,7 +8,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 require('./models/database');
-
 
 
 
@@ -27,6 +28,9 @@ app.use('/arenas', require('./routes/arenas.routes'));
 app.use('/venues', require('./routes/venues.routes'));
 app.use('/tournaments', require('./routes/tournaments.route'));
 app.use('/versions',require('./routes/versions.routes'));
+app.use('/contacto', require('./routes/contacto.routes'));
+app.use('/credits', require('./routes/credits.routes'));
+
 
 
 app.listen(app.get('PORT'), ()=>{
