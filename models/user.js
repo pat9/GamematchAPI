@@ -8,10 +8,14 @@ const UserSchema = new mongoose.Schema({
     birthday:{type:Date, required:false},
     correo:{type:String, required:false},
     profilepic:{type:Object, required:false},
+    bannerImg:{type:Object, required:false},
     isSocialLogin:{type:Boolean, required:false},
     socialMethod:{type:String, required:false},
     idSocial:{type:String, required:false},
-
+    description:{type:String, required:false},
+    facebookLink:{type:String, required:false},
+    twitterLink:{type:String, required:false},
+    twitchLink:{type:String, required:false}
 })
 
 module.exports = mongoose.model('users', UserSchema);
