@@ -50,10 +50,31 @@ router.put('/UpdateUser/:_id', upload.single('profilepic'), async (req, res) => 
     const user = {_id:req.params._id, ...editUser, profilepic}
     const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
     await users.findByIdAndUpdate(req.params._id, editUser);
-    res.json({status: 'Datos actualizados', token});
-    
-    
-    
+    res.json({status: 'Datos actualizados', token});    
+});
+
+router.put('/UpdateBannerUser/:_id', upload.single('bannerImg'), async (req, res) => {    
+    let bannerImg = {};
+    if (req.file != undefined){
+        await cloudinary.uploader.upload(req.file.path,  { type: "private",  
+        eager: [
+            { width: 200, crop: "scale" }, 
+        { width: 360, height: 200, 
+          crop: "crop", gravity: "north"} ] }, (error, result) => {
+            if(!error){
+                bannerImg = result;
+            console.log(bannerImg)
+            }
+        else{
+            console.log(error)
+            res.json({status:"Error in cloudinary"})
+            }
+        })
+    }
+    const user = {_id:req.params._id, profilepic}
+    const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    await users.findByIdAndUpdate(req.params._id, profilepic);
+    res.json({status: 'Datos actualizados', token});    
 });
 
 router.delete('/DeleteUser/:_id', async(req, res)=>{
