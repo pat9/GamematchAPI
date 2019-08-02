@@ -6,6 +6,8 @@ const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path')
 const cloudinary = require('cloudinary').v2;
+const SenderMail = require('../emailSender/emailSender')
+
 
 const storage = multer.diskStorage({
     destination:path.join(__dirname,'../temp/img'),
@@ -29,7 +31,7 @@ router.post('/Login', async (req, res) =>{
             })
         }
     }else{
-        
+        res.json("NO")
     }
 })
 
@@ -65,30 +67,11 @@ router.post('/Register', upload.single('profilepic'), async (req, res) =>{
     
     const passEncryp = crypto.createHmac('sha1', 'secreto').update(password).digest('hex');        
     const newUser = new users({
-        email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic
+        email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic, correo
     });
 
     if(oldUser < 13){
-        var transporter = nodemailer.createTransport ({ 
-            service: 'gmail', 
-            auth: { 
-                user: process.env.GAMEGMAIL, 
-                    pass: process.env.GAMEPASS 
-                } 
-            });
-        
-            const mailOptions = { 
-            from: process.env.GAMEGMAIL,
-            to: correo, // lista de los destinatarios del 
-            subject: 'Control Parental', // Línea del asunto 
-            html: '<h1> GameMatch <h1> <br> <p> Por este medio le comunico que su hij@ ha creado una cuenta en nuestra plataforma, este mensaje tiene como finalidad informarle acerca de la actividad de su hij@ </p>' // cuerpo de texto sin formato 
-        };
-        
-        transporter.sendMail (mailOptions, function (err, info) { 
-            if (err){
-                console.log (err) 
-            }              
-         });   
+        SenderMail(correo, "Control Parental Gamematch", "correoFather")
     }
 
 

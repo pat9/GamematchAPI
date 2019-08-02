@@ -16,5 +16,13 @@ router.get("/", async (req, res) =>{
     res.json(ads);
 })
 
+router.post('/create', async (req, res) =>{
+    console.log(req.body)
+    const { idVenue, titulo, descripcion, isCupon, numCupones } = req.body;
+    const ad = new Ads({ idVenue, titulo, descripcion, isCupon, numCupones});
+    await ad.save();
+    res.json("Listo")
+})
+
 
 module.exports = router;

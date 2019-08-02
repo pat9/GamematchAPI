@@ -82,4 +82,14 @@ router.delete('/:id', async (req, res) =>{
     res.json({status: 'venue Deleted!'})
 })
 
+router.get('/rutas/:id', async(req, res) =>{
+    const gamecenter =  await Venues.findOne({_id:req.params.id});
+    res.json({rutas:gamecenter.rutas})
+})
+
+router.post('/rutas/:id' ,async(req, res)=>{
+    await Venues.updateOne({_id:req.params.id}, { rutas:req.body })
+    res.json({status:"Rutas listas"})
+})
+
 module.exports = router;
