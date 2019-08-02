@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     birthday:{type:Date, required:false},
     correo:{type:String, required:false},
     profilepic:{type:Object, required:false},
+    bannerImg:{type:Object, required:false},
     isSocialLogin:{type:Boolean, required:false},
     socialMethod:{type:String, required:false},
     idSocial:{type:String, required:false},
