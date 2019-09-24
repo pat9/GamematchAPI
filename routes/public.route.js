@@ -66,12 +66,15 @@ router.post('/Register', upload.single('profilepic'), async (req, res) =>{
     const oldUser = Math.floor(((dateNow - dateUser) / (1000 * 60 * 60 * 24)/ 365));
     
     const passEncryp = crypto.createHmac('sha1', 'secreto').update(password).digest('hex');        
-    const newUser = new users({
-        email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic, correo
+    let newUser = new users({
+        email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic
     });
 
     if(oldUser < 13){
         SenderMail(correo, "Control Parental Gamematch", "correoFather")
+        newUser = new users({
+            email : email, gametag : gametag, password : passEncryp, name : name , birthday : birthday, profilepic, correo
+        });
     }
 
 

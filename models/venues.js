@@ -10,7 +10,8 @@ const venueSchema = new mongoose.Schema({
         coordinates:[{type:Number, required:true, index:'2dsphere'}] ,
     },
     phone:{type:String, required:true},
-    rutas:[String]
+    rutas:[String],
+    admins:[mongoose.Types.ObjectId]
 })
 
 const Venues =  mongoose.model('venues', venueSchema);
