@@ -17,8 +17,12 @@ router.get('/:id', async (req, res) => {
 
 //Post a new arena
 router.post('/create', async (req, res) => {
-    const {userId, arenaId, password, name, format, rules, status, streamed, date, arenaAct} = req.body;
-    const arenas = new Arenas({arenaId, password, name, format, rules, status, streamed, date, userId, arenaAct})
+    const {userId, arenaId, password, name, format, rules, status , streamed, date, arenaAct} = req.body;
+    
+    const statusCast = (status == 'on') ? true: false
+    const streamedCast = (streamed == 'on') ? true: false
+    
+    const arenas = new Arenas({arenaId, password, name, format, rules, status:statusCast, streamed:streamedCast, date, userId, arenaAct})
     await arenas.save();
     res.json({status: 'Arena Saved!'});
 })

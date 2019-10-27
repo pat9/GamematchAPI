@@ -61,7 +61,7 @@ router.post('/', upload.single('profilepic'), async (req, res) => {
         }
         
     })
-    const {name, phone} = req.body;
+    const {name, phone, emailadmin} = req.body;
     const loc = {type:"Point", coordinates: [req.body.coordinates.split(',')[1],req.body.coordinates.split(',')[0]]};
     const venue = new Venues({name, profilepic, loc, phone})
     await venue.save();
