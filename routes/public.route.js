@@ -7,7 +7,7 @@ const multer = require('multer');
 const path = require('path')
 const cloudinary = require('cloudinary').v2;
 const SenderMail = require('../emailSender/emailSender')
-
+const auth = require('../middleware/Auth')
 
 const storage = multer.diskStorage({
     destination:path.join(__dirname,'../temp/img'),
@@ -27,12 +27,21 @@ router.post('/Login', async (req, res) =>{
             const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
             res.json({
                 isLogged:true,
-                token            
+                user: {...user._doc, token}            
             })
         }
     }else{
         res.json("NO")
     }
+})
+
+router.post('/islogin', auth.IsLoggedIn ,async( req, res ) => {
+    res.json({
+        status:'OK',
+        isLogin:true,
+        user: req.AuthData
+    })
+
 })
 
 router.get('/Usuarios', async (req, res) =>{

@@ -11,7 +11,7 @@ const venueSchema = new mongoose.Schema({
     },
     phone:{type:String, required:true},
     rutas:[String],
-    admins:[mongoose.Types.ObjectId]
+    admins:[mongoose.SchemaTypes.ObjectId]
 })
 
 const Venues =  mongoose.model('venues', venueSchema);
