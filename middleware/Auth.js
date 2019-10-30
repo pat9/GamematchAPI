@@ -9,9 +9,9 @@ const Auth = {
                 res.json(err);
             }
             else{
-                const user = await users.find({_id:decoded.user._id})
+                const user = await users.findOne({_id:decoded.user._id})
                 if(user){
-                    req.AuthData = decoded;
+                    req.AuthData = {...user._doc, token};
                     next();
                 }
                 else{
