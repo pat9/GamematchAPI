@@ -9,8 +9,9 @@ const arenasSchema = new mongoose.Schema({
     status: {type: Boolean, required: false},
     streamed: {type: Boolean, required: false},
     date: {type: Date, require: true, default: new Date()},
-    userId: {type: mongoose.SchemaTypes.ObjectId , required:true, ref:'user'},
+    userId: {type: mongoose.SchemaTypes.ObjectId , required:true, ref:'users'},
     arenaAct: {type: Boolean, required:true, default: true},
+    users:[{user:{type:mongoose.Schema.ObjectId, require:true, ref:'users'}, status:{type:Number, require:true}}],
     loc:{      
         type:{type:String, required:false, default:"Point"},
         coordinates:[{type:Number, required:false, index:'2dsphere'}] ,
