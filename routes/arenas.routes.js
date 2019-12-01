@@ -21,8 +21,9 @@ router.post('/create', async (req, res) => {
     
     const statusCast = (status == 'on') ? true: false
     const streamedCast = (streamed == 'on') ? true: false
+    const users = [{user: userId, status:2}]
     
-    const arenas = new Arenas({arenaId, password, name, format, rules, status:statusCast, streamed:streamedCast, date, userId, arenaAct})
+    const arenas = new Arenas({arenaId, password, name, format, rules, status:statusCast, streamed:streamedCast, date, userId, arenaAct, users})
     await arenas.save();
     res.json({status: 'Arena Saved!'});
 })
@@ -30,8 +31,8 @@ router.post('/create', async (req, res) => {
 
 //Update an arena
 router.put('/update/:id', async (req,res) => {
-    const {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}} = req.body;
-    const newArena = {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}};
+    const {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}, users} = req.body; 
+    const newArena = {arenaId, password, name, format, rules, status, streamed, arenaAct, loc:{type, coordinates}, users};
     await Arenas.findByIdAndUpdate(req.params.id, newArena);
     res.json({status: 'Arena Updated!'});
 })

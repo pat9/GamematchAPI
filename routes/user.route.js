@@ -28,17 +28,12 @@ router.get('/IsloggedIn', (req, res) =>{
 router.put('/UpdateUser/:_id', upload.single('profilepic'), async (req, res) => {   
     const { email, gametag, password, name, birthday, description, facebookLink, twitterLink, twitchLink} = req.body;
     const editUser = { email, gametag, password, name, birthday, description, facebookLink, twitterLink, twitchLink};
-    
+
     let profilepic = {};
     if (req.file != undefined){
-        await cloudinary.uploader.upload(req.file.path,  { type: "private",  
-        eager: [
-            { width: 200, crop: "scale" }, 
-        { width: 360, height: 200, 
-          crop: "crop", gravity: "north"} ] }, (error, result) => {
+        await cloudinary.uploader.upload(req.file.path, (error, result) => {
               if(!error){
             profilepic = result;
-            console.log(profilepic)
         }
         else{
             console.log(error)
@@ -47,14 +42,45 @@ router.put('/UpdateUser/:_id', upload.single('profilepic'), async (req, res) => 
     })
 }
 
+    console.log(profilepic)
     const user = {_id:req.params._id, ...editUser, profilepic}
     const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
-    await users.findByIdAndUpdate(req.params._id, editUser);
+    await users.findByIdAndUpdate(req.params._id, user);
+    res.json({status: 'Datos actualizados', user});
+    
+    
+    
+});
+
+router.put('/UpdateBannerUser/:_id', upload.single('bannerImg'), async (req, res) => {   
+
+    console.log(req.body )
+    const userf = await users.findById(req.params._id)
+    console.log(userf)
+    console.log(req.file.path)
+
+    let bannerImg = {};
+    if (req.file != undefined){
+        await cloudinary.uploader.upload(req.file.path, (error, result) => {
+              if(!error){
+            bannerImg = result;
+        }
+        else{
+            console.log(error)
+            res.json({status:"Error in cloudinary"})
+        }
+        })
+    }
+    console.log(bannerImg)
+    const user = {...userf, bannerImg}
+    const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    await users.findByIdAndUpdate(req.params._id, user);
     res.json({status: 'Datos actualizados', token});
     
     
     
 });
+
 
 router.delete('/DeleteUser/:_id', async(req, res)=>{
     await users.findByIdAndRemove(req.params._id);
