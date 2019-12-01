@@ -44,7 +44,7 @@ router.put('/UpdateUser/:_id', upload.single('profilepic'), async (req, res) => 
 
     console.log(profilepic)
     const user = {_id:req.params._id, ...editUser, profilepic}
-    const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    const token = jwt.sign({user}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' }); 
     await users.findByIdAndUpdate(req.params._id, user);
     res.json({status: 'Datos actualizados', user});
     
@@ -78,8 +78,7 @@ router.put('/UpdateBannerUser/:_id', upload.single('bannerImg'), async (req, res
     res.json({status: 'Datos actualizados', token});
     
     
-    
-});
+ });
 
 
 router.delete('/DeleteUser/:_id', async(req, res)=>{
