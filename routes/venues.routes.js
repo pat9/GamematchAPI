@@ -40,7 +40,7 @@ router.get('/', async(req, res) => {
 router.get('/invitation', async(req, res)=>{
     SenderMail("y2jmontalvo@gmail.com","GameMatch Venues", "venueInvitation",{name:"Venue Generica"});
     res.send("Enviado")
-})
+})  
 
 //Get a single venue
 router.get('/:id', async (req, res) => {

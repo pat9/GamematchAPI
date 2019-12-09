@@ -7,7 +7,7 @@ const app = express();
 const router = express.Router();
 
 //NEARBY TOURNAMENTS
-getTour = async() => {
+getTour = async(req) => {
 
     const query = `
     query SocalTournaments($perPage: Int, $videogameId: ID, $coordinates: String!, $radius: String!) {
@@ -51,12 +51,23 @@ getTour = async() => {
         }
       }
     `
-  
-    const variables = {
+    const { lat, lng } = req.query;
+    let variables = {}
+    if(lat != undefined && lng != undefined){
+      variables ={
+        perPage: 50,        
+        videogameId: 1386,
+        coordinates: `${lat},${lng}`,
+        radius: "200mi"
+      }       
+    }
+    else{
+      variables ={
         perPage: 50,        
         videogameId: 1386,
         coordinates: "20.9754,-89.6170",
         radius: "200mi"
+      }
     }
   
     const result = await fetch(api, {
@@ -69,6 +80,7 @@ getTour = async() => {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       return data
     })
     .catch((e) => {
@@ -78,20 +90,20 @@ getTour = async() => {
     return result.data
 }
   
-main = async() => {
-  const data = await getTour()
+main = async(req) => {
+  const data = await getTour(req)
   return data;
 }
 
 router.get('/nearby', async (req, res)=>{
-    let tournaments =  await main();
+    let tournaments =  await main(req);
     let result = tournaments.tournaments.nodes
     res.send(result);
 })
 
 
 // PAST TOURNAMENTS
-getPastTour = async() => {
+getPastTour = async(req) => {
 
   const query = `
   query SocalTournaments($perPage: Int, $videogameId: ID, $coordinates: String!, $radius: String!) {
@@ -136,12 +148,24 @@ getPastTour = async() => {
     }
   `
 
-  const variables = {
-      perPage: 15,        
-      videogameId: 1386,
-      coordinates: "20.9754,-89.6170",
-      radius: "200mi"
-  }
+  const { lat, lng } = req.query;
+    let variables = {}
+    if(lat != undefined && lng != undefined){
+      variables ={
+        perPage: 50,        
+        videogameId: 1386,
+        coordinates: `${lat},${lng}`,
+        radius: "200mi"
+      }       
+    }
+    else{
+      variables ={
+        perPage: 50,        
+        videogameId: 1386,
+        coordinates: "20.9754,-89.6170",
+        radius: "200mi"
+      }
+    }
 
   const result = await fetch(api, {
     method: 'post',
@@ -162,14 +186,15 @@ getPastTour = async() => {
   return result.data
 }
 
-main3 = async() => {
-const data = await getPastTour()
+main3 = async(req) => {
+const data = await getPastTour(req)
 return data;
 }
 
 router.get('/past', async (req, res)=>{
-  let tournaments =  await main3();
-  let result = tournaments.tournaments.nodes
+  let tournaments =  await main3(req);
+  let result = tournaments.tournaments.nodes.filter(item =>  item.startAt <= (new Date().getTime()/1000) )
+  
   res.send(result);
 })
 
