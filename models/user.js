@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema({
     description:{type:String, required:false},
     facebookLink:{type:String, required:false},
     twitterLink:{type:String, required:false},
-    twitchLink:{type:String, required:false}
+    twitchLink:{type:String, required:false},
+    permissions:[{type: Number, default: 1}]
 })
 
 module.exports = mongoose.model('users', UserSchema);

@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 
 
-router.use(Auth.IsLoggedIn)
+//router.use(Auth.IsLoggedIn)
 
 router.get('/IsloggedIn', (req, res) =>{
     res.json({
@@ -80,6 +80,81 @@ router.put('/UpdateBannerUser/:_id', upload.single('bannerImg'), async (req, res
     
     
 });
+
+
+router.get('/setPermissionsDB', async (req, res) => {
+    const permissions = require('../models/permissions')
+
+    const jugador = new permissions({ name: 'Jugador', number:1 })
+    const gamecenter = new permissions({ name: 'Administrador de Gamecenter', number:2 })
+    const administrador = new permissions({ name: 'Administrador de sistema', number:3 })
+
+    jugador.save();
+    gamecenter.save();
+    administrador.save();
+
+
+}) 
+
+router.post('/setPermissionsAdmin/:id', async (req, res) => {
+    const {id} = req.params
+    const { permissions } = req.body
+    const user = await users.findById(id)
+
+    const updatedUser = {...user._doc, permissions:[1,2,3]}
+    console.log(updatedUser)
+    await users.findOneAndUpdate({_id:id}, updatedUser)
+    const token = jwt.sign({updatedUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    res.json({user:updatedUser, token})
+
+})
+router.post('/setPermissionsGC/:id', async (req, res) => {
+    const {id} = req.params
+    const { permissions } = req.body
+    const user = await users.findById(id)
+
+    const updatedUser = {...user._doc, permissions:[1,2]}
+    console.log(updatedUser)
+    await users.findOneAndUpdate({_id:id}, updatedUser)
+    const token = jwt.sign({updatedUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    res.json({user:updatedUser, token})
+
+})
+router.post('/setPermissionsJugador/:id', async (req, res) => {
+    const {id} = req.params
+    const { permissions } = req.body
+    const user = await users.findById(id)
+
+    const updatedUser = {...user._doc, permissions:[1]}
+    console.log(updatedUser)
+    await users.findOneAndUpdate({_id:id}, updatedUser)
+    const token = jwt.sign({updatedUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    res.json({user:updatedUser, token})
+
+})
+
+router.post('/setPermissions/:id', async (req, res) => {
+    const {id} = req.params
+    const { permissions } = req.body
+    const user = await users.findById(id)
+
+    const updatedUser = {...user._doc, permissions}
+    console.log(updatedUser)
+    await users.findOneAndUpdate({_id:id}, updatedUser)
+    const token = jwt.sign({updatedUser}, process.env.TOKEN_SECRET_KEY, { expiresIn: '90h' });
+    res.json({user:updatedUser, token})
+
+})
+
+router.post('/getUser/:email', async (req, res) =>{
+    const {email} = req.params
+  
+    const user = await users.find({email:email})
+    res.json(user)
+
+})
+
+
 
 
 router.delete('/DeleteUser/:_id', async(req, res)=>{
